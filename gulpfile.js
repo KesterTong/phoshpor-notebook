@@ -178,6 +178,34 @@ gulp.task('examples', function() {
   return stream.merge(src, css);
 });
 
+gulp.task('notebook', function() {
+  var project = typescript.createProject({
+    declarationFiles: false,
+    noImplicitAny: true,
+    target: 'ES5',
+  });
+
+  var sources = typings.concat([
+    'dist/phosphor.d.ts',
+    'notebook/cellmodel.ts',
+    'notebook/menuitem.ts',
+    'notebook/menu.ts',
+    'notebook/menubar.ts',
+    'notebook/cell.ts',
+    'notebook/notebook.ts',
+    'notebook/app.ts',
+    'notebook/index.ts',
+  ]);
+
+  var src = gulp.src(sources)
+    .pipe(typescript(project))
+    .pipe(rename(function (path) {
+      path.dirname += '/build'; }))
+    .pipe(header('"use strict";\n'))
+    .pipe(gulp.dest('notebook'));
+
+  return stream.merge(src);
+});
 
 gulp.task('css', function() {
   return gulp.src(stylSources)
