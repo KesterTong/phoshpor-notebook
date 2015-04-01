@@ -23,21 +23,22 @@ export class NotebookComponent extends Component<INotebookData> {
   }
 
   render(): IElement[] {
+    var cells = this.data.cells.map((m, i) => this.createCell(m, i));
     return [
       div({id: 'notebook', tabIndex: -1},
-        div({className: 'container', id: 'notebook-container'},
-          this.data.cells.map(function(cellModel, index) {
-            return Cell({
-              model: cellModel,
-              key: cellModel.id,
-              selected: index == this.data.selectedIndex,
-              requestSelect: this.data.requestSelect.bind(this, index)
-            });
-          }, this)
-        ),
+        div({className: 'container', id: 'notebook-container'}, cells),
         div({className: 'end_space'})
       )
     ]
+  }
+
+  createCell(model: CellModel, index: number): IElement {
+    return Cell({
+      model: model,
+      key: model.id,
+      selected: index === this.data.selectedIndex,
+      requestSelect: () => this.data.requestSelect(index),
+    });
   }
 }
 
