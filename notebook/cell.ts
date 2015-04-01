@@ -37,7 +37,7 @@ export class CellComponent extends Component<ICellData> {
   render(): IElement[] {
     var input_prompt_number = this.data.model.inputPromptNumber;
     var input_number = input_prompt_number === undefined ? ' ' : String(input_prompt_number);
-    var input_prompt = this.data.key; // 'In [' + input_number + ']:';
+    var input_prompt = 'In [' + input_number + ']:';
     
     return [
       div({className: 'input'},
