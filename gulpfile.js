@@ -119,33 +119,6 @@ gulp.task('watch', function() {
 });
 
 
-gulp.task('examples', function() {
-  var project = typescript.createProject({
-    declarationFiles: false,
-    noImplicitAny: true,
-    target: 'ES5',
-  });
-
-  var sources = typings.concat([
-    'dist/phosphor.d.ts',
-    'examples/**/index.ts'
-  ]);
-
-  var src = gulp.src(sources)
-    .pipe(typescript(project))
-    .pipe(rename(function (path) {
-      path.dirname += '/build'; }))
-    .pipe(header('"use strict";\n'))
-    .pipe(gulp.dest('examples'));
-
-  var css = gulp.src('examples/**/index.styl')
-    .pipe(stylus({use: [nib()]}))
-    .pipe(rename(function (path) {
-      path.dirname += '/build'; }))
-    .pipe(gulp.dest('examples'));
-
-  return stream.merge(src, css);
-});
 
 gulp.task('notebook', function() {
   var project = typescript.createProject({
