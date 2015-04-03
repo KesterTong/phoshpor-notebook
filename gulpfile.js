@@ -112,37 +112,6 @@ var tsSources = [
 var stylSources = './styl/index.styl';
 
 
-gulp.task('clean', function(cb) {
-  del(['./dist'], cb);
-});
-
-
-gulp.task('dist', function() {
-  var project = typescript.createProject({
-    declarationFiles: true,
-    noImplicitAny: true,
-    target: 'ES5',
-  });
-
-  var sources = typings.concat(tsSources);
-
-  var src = gulp.src(sources)
-    .pipe(typescript(project));
-
-  var dts = src.dts.pipe(concat('phosphor.d.ts'))
-    .pipe(gulp.dest('./dist'));
-
-  var js = src.pipe(concat('phosphor.js'))
-    .pipe(header('"use strict";\n'))
-    .pipe(gulp.dest('./dist'));
-
-  var css = gulp.src(stylSources)
-    .pipe(stylus({ use: [nib()] }))
-    .pipe(rename('phosphor.css'))
-    .pipe(gulp.dest('./dist'));
-
-  return stream.merge(dts, js, css);
-});
 
 
 gulp.task('watch', function() {
