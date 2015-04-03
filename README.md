@@ -1,6 +1,9 @@
 Phosphor
 ========
 
+Note that this is still a fork of phosphor, we should find a way to make phosphor just a dependencie
+
+
 Build Source
 ------------
 
@@ -16,6 +19,7 @@ cd phosphor
 npm install
 tsd reinstall -so
 gulp
+gulp notebook
 ```
 
 Output will be placed in the `/dist` directory.
