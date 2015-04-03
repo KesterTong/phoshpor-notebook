@@ -5,6 +5,9 @@ Note that this is still a fork of phosphor, we should find a way to make phospho
 
 build phosphor itself, and softlink `phosphor/dist` into this repo `dist`.
 
+link/move `dist/phosphor.d.ts` into `typings/phosphor/` and update `typings/tsd.d.ts` to match in order to `gulp docs`.
+
+
 
 Build Source
 ------------
