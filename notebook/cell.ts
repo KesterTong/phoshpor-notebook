@@ -10,16 +10,30 @@ import createFactory = phosphor.virtualdom.createFactory;
 var div = DOM.div;
 
 export interface ICellData extends IData {
+  /**
+   * Model data of the cell
+   *
+   * Data that will be synced across collaborators and that contains
+   * meaning fullinformation like metadata, text and type of cell
+   */
   model:CellModel;
   requestSelect:() => void
+  /**
+   * Is the cell currently selected
+   *
+   * Will affect actions, like copy pasting and of course 
+   * style of the cell.
+   */
   selected:boolean;
+  rendered?:boolean;
 }
 
 export class CellComponent extends Component<ICellData> {
 
   static tagName = 'div';
 
-  static className = 'cell code_cell rendered';
+  // code_cell and rendered are probably not static, and should be part of a method.
+  //static className = 'cell code_cell rendered';
 
   constructor() {
     super();
@@ -31,10 +45,13 @@ export class CellComponent extends Component<ICellData> {
   }
 
   beforeRender(): void {
-    this.node.className = 'cell code_cell rendered' + (this.data.selected ? ' selected' : '');
+    this.node.className = 'cell code_cell rendered' 
+            + (this.data.rendered ? ' rendered' : '')
+            + (this.data.selected ? ' selected' : '');
   }
 
   render(): IElement[] {
+    console.log('I, cell', this.data.model.id, ', will be rerendered');
     var input_prompt_number = this.data.model.inputPromptNumber;
     var input_number = input_prompt_number === undefined ? ' ' : String(input_prompt_number);
     var input_prompt = 'In [' + input_number + ']:';
@@ -44,7 +61,7 @@ export class CellComponent extends Component<ICellData> {
         div({className: 'prompt input_prompt'}, input_prompt),
         div({className: 'inner_cell'},
           div({className: 'input_area'},
-            CodeMirror({key: this.data.key + '-cm', config: {mode: 'python'}})
+            CodeMirror({key: this.data.key + '-cm', config: {mode: 'python', value:this.data.model.value}})
           )
         )
       )

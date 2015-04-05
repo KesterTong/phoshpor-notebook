@@ -9,10 +9,14 @@ module Notebook {
 
     var div = DOM.div;
 
-    interface ICellData extends IData {
+    export interface FooBar extends IData {
+      data: CellModel[]
     }
 
+
+
     export class AppComponent extends Component<IData> {
+
 
       static tagName = 'div';
 
@@ -22,18 +26,29 @@ module Notebook {
       private selectedCellIndex:number;
 
       constructor() {
-        this.cells = [
-          {id: '1'},
-          {id: '2', inputPromptNumber:14}
-        ]
+        if(!this.cells){
+            this.cells = [
+              {id: '1', value:'placeholder'},
+              {id: '2', inputPromptNumber:14 , value:'this is a long test'}
+            ]
+            }
         this.selectedCellIndex = 0;
         super();
       }
 
       newCell(): CellModel {
         var id = Math.random() * 4294967296;
-        return {id: String(id)}
+        return {id: String(id), value:''}
       }
+    
+      init(data:FooBar, children:IElement[]):void {
+        console.log('init is called with data:', data);
+        if(data.data){
+            this.cells = data.data;
+        }
+        super.init(data, children);
+      }
+
 
       insertCellAbove(): void {
         console.log(this.selectedCellIndex);
@@ -60,6 +75,12 @@ module Notebook {
         this.update()
       }
 
+      doStuff():void {
+        this.cells[0].value = 'Heyyyy';
+        this.cells[0].inputPromptNumber = (this.cells[0].inputPromptNumber || 0)+1;
+        this.update();
+      }
+
       render(): IElement[] {
         return [
           div({id: 'header', style: {'display': 'block'}},
@@ -71,7 +92,15 @@ module Notebook {
                 menus: [
                   {
                     title:'File',
-                    items:[],
+                    items:[
+                    { 
+                      title:'change things',
+                      onclick : this.doStuff.bind(this)
+
+                    }
+                    
+                    
+                    ],
                   },
                   {
                     title:'Edit',
