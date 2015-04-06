@@ -29,7 +29,7 @@ module Notebook {
         if(!this.cells){
             this.cells = [
               {id: '1', value:'placeholder'},
-              {id: '2', inputPromptNumber:14 , value:'this is a long test'}
+              {id: '2', execution_count:14 , value:'this is a long test'}
             ]
             }
         this.selectedCellIndex = 0;
@@ -77,7 +77,7 @@ module Notebook {
 
       doStuff():void {
         this.cells[0].value = 'Heyyyy';
-        this.cells[0].inputPromptNumber = (this.cells[0].inputPromptNumber || 0)+1;
+        this.cells[0].execution_count = (this.cells[0].execution_count || 0)+1;
         this.update();
       }
 

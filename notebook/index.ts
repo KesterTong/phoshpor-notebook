@@ -8,7 +8,7 @@ module example {
 
       var notebook_app = Notebook.App({data:{cells:[
           {id: '1', value:'foo'},
-          {id: '2', inputPromptNumber:14 , value:'this is a long test..'}
+          {id: '2', execution_count:14 , value:'this is a long test..'}
         ],
         notebook:notebook_data.notebook}
       });

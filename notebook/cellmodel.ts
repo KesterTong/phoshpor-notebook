@@ -2,7 +2,7 @@ module Notebook {
 
 export interface CellModel {
   id:string;
-  inputPromptNumber?: number;
+  execution_count?: number;
   value: string;
 }
 

@@ -52,7 +52,7 @@ export class CellComponent extends Component<ICellData> {
 
   render(): IElement[] {
     console.log('I, cell', this.data.model.id, ', will be rerendered');
-    var input_prompt_number = this.data.model.inputPromptNumber;
+    var input_prompt_number = this.data.model.execution_count;
     var input_number = input_prompt_number === undefined ? ' ' : String(input_prompt_number);
     var input_prompt = 'In [' + input_number + ']:';
     
