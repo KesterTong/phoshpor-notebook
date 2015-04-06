@@ -33,6 +33,7 @@ var tsSources = [
     'notebook/menubar',
     'notebook/menuitem',
     'notebook/notebook',
+    'notebook/demo_data',
     'dist/phosphor'
 ].map(function(name) { return name + '.ts'; });
 
@@ -75,6 +76,7 @@ gulp.task('notebook', function() {
     'notebook/notebook.ts',
     'notebook/app.ts',
     'notebook/index.ts',
+    'notebook/demo_data.ts'
   ]);
 
   var src = gulp.src(sources)

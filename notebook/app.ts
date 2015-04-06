@@ -9,8 +9,8 @@ module Notebook {
 
     var div = DOM.div;
 
-    export interface FooBar extends IData {
-      data: CellModel[]
+    export interface AppInitData extends IData {
+        data:any
     }
 
 
@@ -41,10 +41,10 @@ module Notebook {
         return {id: String(id), value:''}
       }
     
-      init(data:FooBar, children:IElement[]):void {
+      init(data:AppInitData, children:IElement[]):void {
         console.log('init is called with data:', data);
-        if(data.data){
-            this.cells = data.data;
+        if(data.data.cells){
+            this.cells = data.data.cells;
         }
         super.init(data, children);
       }
@@ -98,7 +98,6 @@ module Notebook {
                       onclick : this.doStuff.bind(this)
 
                     }
-                    
                     
                     ],
                   },
