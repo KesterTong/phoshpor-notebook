@@ -10,32 +10,37 @@ import createFactory = phosphor.virtualdom.createFactory;
 var div = DOM.div;
 var pre = DOM.pre
 
-//union IDD { 
-//    IExecuteResult;
-//    IStream;
-//    IError;
-//}
-//
-
 export interface IOutputData extends IData{
     output:IExecuteResult| IStream| IError
 }
 
+
+// enum of the different message type we can receive. 
+// though you cannot map to string. 
+// Find a way.
 export enum EnumOutputType {
     Execute,
     Display
 }
 
+
+/**
+ *  Common ancestor of all the type of message that can be received
+ *  and displayed in a a notebook,
+ **/
 export interface IOutputType extends IData{
     output_type:string;
-
 }
 
+
+/**
+ * Display data output type
+ **/
 export interface IDisplayData extends IOutputType{
     data:any;
     metadata:any;
 }
-
+/** Execut result Data output Type **/
 export interface IExecuteResult extends IOutputType{
     data:any;
     execution_count:number;
@@ -81,7 +86,9 @@ export interface IMimeBundle extends IData {
 
 
 
-
+/**
+ * Will select and display the right thing in a mimebundle
+ **/
 export class MimeBundle extends Component<IMimeBundle>{
     render():IElement{
         var img:any = this.data['image/png']
@@ -134,6 +141,12 @@ export class OutputAreaComponent extends Component<IOutputData>{
 
 }
 
+var OAs = createFactory(OutputAreaComponent);
+var TBs = createFactory(TraceBack);
+var STs = createFactory(Stream);
+var ERs = createFactory(ExecuteResult);
+var DDs = createFactory(DisplayData);
+
 export class CellComponent extends Component<ICellData> {
 
   static tagName = 'div';
@@ -161,11 +174,6 @@ export class CellComponent extends Component<ICellData> {
     var input_number = input_prompt_number == null ? ' ' : String(input_prompt_number);
     var input_prompt = 'In [' + input_number + ']:';
 
-    var OAs = createFactory(OutputAreaComponent);
-    var TBs = createFactory(TraceBack);
-    var STs = createFactory(Stream);
-    var ERs = createFactory(ExecuteResult);
-    var DDs = createFactory(DisplayData);
 
     var outputs_areas:any[] = [];
     for(var i in this.data.model.outputs){
