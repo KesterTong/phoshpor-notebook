@@ -1,6 +1,6 @@
 module Notebook {
 
-
+    import CellModel = Cell.CellModel;
     import DOM = phosphor.virtualdom.dom;
     import Component = phosphor.components.Component;
     import IElement = phosphor.virtualdom.IElement;

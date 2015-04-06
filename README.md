@@ -1,7 +1,7 @@
-Phosphor
-========
+Phosphor-Notebook
+=================
 
-Note that this is still a fork of phosphor, we should find a way to make phosphor just a dependency
+An implementation of the JUpyter-notebook frontend using [phosphor](https://phosphorjs/phosphor) and typescript. 
 
 build phosphor itself, and softlink `phosphor/dist` into this repo `dist`.
 
@@ -19,7 +19,7 @@ Build Source
 - [tsd](https://github.com/DefinitelyTyped/tsd) `npm install -g tsd@next`
 
 ```
-git clone https://github.com/KesterTong/phosphor-notebook.git
+git clone https://github.com/Carreau/phosphor-notebook.git
 cd phosphor-notebook
 npm install
 tsd reinstall -so
@@ -29,3 +29,10 @@ gulp notebook
 
 Output will be placed in the `/notebook` directory.
 
+spawn your preferred static file server to play with it. 
+You also use `gulp watch` if you have the chrome livereload extension 
+to refresh the page everytime you save. 
+
+`gulp docs` should build the docs in notebook/docs.
+
+PR welcome.

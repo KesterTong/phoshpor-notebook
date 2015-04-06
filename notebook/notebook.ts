@@ -1,5 +1,6 @@
 module Notebook {
 
+    import MCell = Cell;
     import DOM = phosphor.virtualdom.dom;
     import Component = phosphor.components.Component;
     import IElement = phosphor.virtualdom.IElement;
@@ -8,8 +9,11 @@ module Notebook {
 
     var div = DOM.div;
 
+    /** 
+     * This is the docs for INotebook Data
+     **/
     export interface INotebookData extends IData {
-      cells: CellModel[]
+      cells: MCell.CellModel[]
       requestSelect: (i: number) => void
       selectedIndex?: number
     }
@@ -32,8 +36,8 @@ module Notebook {
         ]
       }
 
-      createCell(model: CellModel, index: number): IElement {
-        return Cell({
+      createCell(model: MCell.CellModel, index: number): IElement {
+        return MCell.Cell({
           model: model,
           key: model.id,
           selected: index === this.data.selectedIndex,

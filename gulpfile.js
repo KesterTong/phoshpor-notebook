@@ -69,6 +69,7 @@ gulp.task('notebook', function() {
   var sources = typings.concat([
     'dist/phosphor.d.ts',
     'notebook/cellmodel.ts',
+    'notebook/demo_data.ts',
     'notebook/menuitem.ts',
     'notebook/menu.ts',
     'notebook/menubar.ts',

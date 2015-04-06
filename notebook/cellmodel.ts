@@ -1,4 +1,4 @@
-module Notebook {
+module Cell {
 
 export interface CellModel {
   id:string;
