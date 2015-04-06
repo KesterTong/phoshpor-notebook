@@ -8,6 +8,51 @@ import CodeMirror = phosphor.components.CodeMirrorFactory;
 import createFactory = phosphor.virtualdom.createFactory;
 
 var div = DOM.div;
+var pre = DOM.pre
+
+//union IDD { 
+//    IExecuteResult;
+//    IStream;
+//    IError;
+//}
+//
+
+export interface IOutputData extends IData{
+    output:IExecuteResult| IStream| IError
+}
+
+export enum EnumOutputType {
+    Execute,
+    Display
+}
+
+export interface IOutputType extends IData{
+    output_type:string;
+
+}
+
+export interface IDisplayData extends IOutputType{
+    data:any;
+    metadata:any;
+}
+
+export interface IExecuteResult extends IOutputType{
+    data:any;
+    execution_count:number;
+    metadata:any;
+}
+
+export interface IStream extends IOutputType{
+    name:string;
+    text:string[];
+}
+
+export interface IError extends IOutputType{
+    ename:string;
+    evalue:string;
+    traceback: string[];
+}
+
 
 export interface ICellData extends IData {
   /**
@@ -26,6 +71,67 @@ export interface ICellData extends IData {
    */
   selected:boolean;
   rendered?:boolean;
+}
+
+
+
+export interface IMimeBundle extends IData {
+    [k:string]:any
+}
+
+
+
+
+export class MimeBundle extends Component<IMimeBundle>{
+    render():IElement{
+        var img:any = this.data['image/png']
+        if(img){
+            return DOM.img({'src':'data:image/png;base64,'+img})
+        }
+        return div(null, 
+                this.data['text/plain'])
+
+    }
+}
+
+export class DisplayData extends Component<IDisplayData>{
+    render(){
+        return createFactory(MimeBundle)(this.data.data)
+    }
+}
+
+export class ExecuteResult extends Component<IExecuteResult>{
+    render():IElement {
+        return createFactory(MimeBundle)(this.data.data)
+    }
+
+}
+
+export class TraceBack extends Component<IError>{
+    static tagName = 'div';
+
+    render():IElement{
+        var o = this.data;
+        return pre({}, o.ename+'\n'+o.evalue+'\n'+(o.traceback.join('\n')))
+    }
+}
+
+export class Stream extends Component<IStream>{
+    static tagName = 'div';
+
+    render():IElement{
+         return pre({}, this.data.text.join('\n'))
+    }
+
+}
+
+export class OutputAreaComponent extends Component<IOutputData>{
+    static tagName = 'div';
+
+    render():IElement{
+        return div({style:'color:red'},'Heyyyyyyyyyy Not handeled case !')
+    }
+
 }
 
 export class CellComponent extends Component<ICellData> {
@@ -51,21 +157,44 @@ export class CellComponent extends Component<ICellData> {
   }
 
   render(): IElement[] {
-    console.log('I, cell', this.data.model.id, ', will be rerendered');
     var input_prompt_number = this.data.model.execution_count;
-    var input_number = input_prompt_number === undefined ? ' ' : String(input_prompt_number);
+    var input_number = input_prompt_number == null ? ' ' : String(input_prompt_number);
     var input_prompt = 'In [' + input_number + ']:';
+
+    var OAs = createFactory(OutputAreaComponent);
+    var TBs = createFactory(TraceBack);
+    var STs = createFactory(Stream);
+    var ERs = createFactory(ExecuteResult);
+    var DDs = createFactory(DisplayData);
+
+    var outputs_areas:any[] = [];
+    for(var i in this.data.model.outputs){
+        if(this.data.model.outputs[i].output_type=='stream'){
+            outputs_areas.push(STs(this.data.model.outputs[i]))
+        } else if(this.data.model.outputs[i].output_type =='error') {
+            outputs_areas.push(TBs(this.data.model.outputs[i]))
+        } else if(this.data.model.outputs[i].output_type =='execute_result') {
+            outputs_areas.push(ERs(this.data.model.outputs[i]))
+        } else if(this.data.model.outputs[i].output_type =='display_data') {
+            outputs_areas.push(DDs(this.data.model.outputs[i]))
+        } else {
+            console.log('unhandled type: ',this.data.model.outputs[i])
+        }
+
+    }
     
-    return [
-      div({className: 'input'},
+    var ret = div({className: 'input'},
         div({className: 'prompt input_prompt'}, input_prompt),
         div({className: 'inner_cell'},
           div({className: 'input_area'},
-            CodeMirror({key: this.data.key + '-cm', config: {mode: 'python', value:this.data.model.value}})
-          )
+            CodeMirror({key: this.data.key + '-cm', config: {mode: 'python', value:this.data.model.source}})
+          ),
+        outputs_areas
         )
       )
-    ]
+    
+
+    return [ret];
   }
 }
 

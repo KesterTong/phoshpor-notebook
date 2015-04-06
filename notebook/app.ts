@@ -28,8 +28,8 @@ module Notebook {
       constructor() {
         if(!this.cells){
             this.cells = [
-              {id: '1', value:'placeholder'},
-              {id: '2', execution_count:14 , value:'this is a long test'}
+              {id: '1', source:'placeholder...'},
+              {id: '2', execution_count:14 , source:'this is a long test'}
             ]
             }
         this.selectedCellIndex = 0;
@@ -38,13 +38,20 @@ module Notebook {
 
       newCell(): CellModel {
         var id = Math.random() * 4294967296;
-        return {id: String(id), value:''}
+        return {id: String(id), source:''}
       }
     
       init(data:AppInitData, children:IElement[]):void {
         console.log('init is called with data:', data);
-        if(data.data.cells){
-            this.cells = data.data.cells;
+        if(data.data.notebook){
+            console.warn('loading notebook demo model')
+            this.cells = data.data.notebook.cells.map(function(m:any){
+                m.id = Math.random() * 4294967296;
+                m.source = m.source.join('')
+                return m
+            })
+        } else if(data.data.cells){
+            //this.cells = data.data.cells;
         }
         super.init(data, children);
       }
@@ -76,7 +83,7 @@ module Notebook {
       }
 
       doStuff():void {
-        this.cells[0].value = 'Heyyyy';
+        this.cells[0].source = 'Heyyyy';
         this.cells[0].execution_count = (this.cells[0].execution_count || 0)+1;
         this.update();
       }
@@ -95,7 +102,7 @@ module Notebook {
                     items:[
                     { 
                       title:'change things',
-                      onclick : this.doStuff.bind(this)
+                      onclick : () => this.doStuff()
 
                     }
                     
@@ -106,15 +113,15 @@ module Notebook {
                     items:[
                       {
                         title: 'Insert Cell Above',
-                        onclick: this.insertCellAbove.bind(this)
+                        onclick: () => this.insertCellAbove()
                       },
                       {
                         title: 'Insert Cell Below',
-                        onclick: this.insertCellBelow.bind(this)
+                        onclick: ()=>this.insertCellBelow()
                       },
                       {
                         title: 'Delete Cell',
-                        onclick: this.deleteCell.bind(this)
+                        onclick: () => this.deleteCell()
                       }
                     ],
                   }
