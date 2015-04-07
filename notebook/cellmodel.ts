@@ -1,8 +1,10 @@
-module Notebook {
+module Cell {
 
 export interface CellModel {
   id:string;
-  inputPromptNumber?: number;
+  execution_count?: number;
+  source: string;
+  outputs?:any;
 }
 
 }

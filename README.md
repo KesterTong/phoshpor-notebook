@@ -1,5 +1,13 @@
-Phosphor
-========
+Phosphor-Notebook
+=================
+
+An implementation of the JUpyter-notebook frontend using [phosphor](https://phosphorjs/phosphor) and typescript. 
+
+build phosphor itself, and softlink `phosphor/dist` into this repo `dist`.
+
+link/move `dist/phosphor.d.ts` into `typings/phosphor/` and update `typings/tsd.d.ts` to match in order to `gulp docs`.
+
+
 
 Build Source
 ------------
@@ -11,33 +19,20 @@ Build Source
 - [tsd](https://github.com/DefinitelyTyped/tsd) `npm install -g tsd@next`
 
 ```
-git clone https://github.com/phosphorjs/phosphor.git
-cd phosphor
+git clone https://github.com/Carreau/phosphor-notebook.git
+cd phosphor-notebook
 npm install
 tsd reinstall -so
 gulp
+gulp notebook
 ```
 
-Output will be placed in the `/dist` directory.
+Output will be placed in the `/notebook` directory.
 
+spawn your preferred static file server to play with it. 
+You also use `gulp watch` if you have the chrome livereload extension 
+to refresh the page everytime you save. 
 
-Build Examples
---------------
+`gulp docs` should build the docs in notebook/docs.
 
-Follow the source build instructions first.
-
-```
-gulp examples
-```
-
-Navigate to `index.html` of the example of interest.
-
-
-Supported Browsers
-------------------
-The browser versions which are currently *known to work* are listed below.
-Earlier versions may also work, but come with no guarantees.
-
-- IE 11
-- Firefox 32+
-- Chrome 38+
+PR welcome.

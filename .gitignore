@@ -6,3 +6,5 @@ dist
 docs
 node_modules
 typings
+notebook/notebook.css
+
